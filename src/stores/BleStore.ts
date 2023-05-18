@@ -14,6 +14,16 @@ export const discovered = atom<Devices>(
       address: '00:00:00:00:00:01',
       isSaved: false,
     },
+    {
+      name: 'Device 1',
+      address: '00:00:00:00:00:02',
+      isSaved: false,
+    },
+    {
+      name: 'Device 1',
+      address: '00:00:00:00:00:03',
+      isSaved: false,
+    },
   ],
   (get, set, update) => {
     set(discovered, new Map(update));

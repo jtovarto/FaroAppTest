@@ -1,41 +1,39 @@
-import {atom, createStore} from 'jotai';
+import {atom} from 'jotai';
 import {Devices} from '../types/types';
 
 // const bleStore = createStore();
 
-export const paired = atom<Devices>(new Map(), (get, set, update) => {
-  set(paired, new Map(update));
-});
+const devicesHandler = (devices: any) => {
+  return;
+};
 
-export const discovered = atom<Devices>(
-  [
-    {
-      name: 'Device 1',
-      address: '00:00:00:00:00:01',
-      isSaved: false,
-    },
-    {
-      name: 'Device 1',
-      address: '00:00:00:00:00:02',
-      isSaved: false,
-    },
-    {
-      name: 'Device 1',
-      address: '00:00:00:00:00:03',
-      isSaved: false,
-    },
-  ],
-  (get, set, update) => {
-    set(discovered, new Map(update));
+export const paired = atom<Devices>(
+  new Map(),
+  (get: any, set: any, {action, device}: any) => {
+    const previousDevices = get(paired);
+    if (action === 'remove') {
+      previousDevices.delete(device.address);
+    } else if (action === 'add') {
+      previousDevices.set(device.address, device);
+    }
+    set(paired, new Map(previousDevices));
   },
 );
 
-// myStore.set(countAtom, 1);
-// const unsub = myStore.sub(countAtom, () => {
-//   console.log('countAtom value is changed to', myStore.get(countAtom));
-// });
+export const discovered = atom<Devices>(
+  new Map(),
+  (get: any, set: any, {action, device}: any) => {
+    const previousDevices = get(discovered);
+    if (action === 'remove') {
+      previousDevices.delete(device.address);
+    } else if (action === 'add') {
+      previousDevices.set(device.address, device);
+    }
+    set(discovered, new Map(previousDevices));
+  },
+);
 
 export default {
-  discovered,
   paired,
+  discovered,
 };

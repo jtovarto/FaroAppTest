@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Devices} from './types/types';
+import {Devices} from '../types/types';
 
 export const DeviceList = ({devices}: {devices: Devices}) => {
   const onPressHandler = () => {

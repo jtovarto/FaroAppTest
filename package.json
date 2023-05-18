@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "ios:install": "cd ios && pod install && cd .."
   },
   "dependencies": {
     "patch-package": "^7.0.0",

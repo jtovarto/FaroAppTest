@@ -1,24 +1,15 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native/';
 import {DeviceList} from './src/components/DeviceList';
+import useDevices from './src/hooks/useDevices';
 
 const App = () => {
-  const pairedDevices = [
-    {name: 'Device 1', address: '00:00:00:00:00:00'},
-    {name: 'Device 1', address: '00:00:00:00:00:00'},
-    {name: 'Device 1', address: '00:00:00:00:00:00'},
-  ];
-
-  const discoveredDevices = [
-    {name: 'Device 1', address: '00:00:00:00:00:00'},
-    {name: 'Device 1', address: '00:00:00:00:00:00'},
-    {name: 'Device 1', address: '00:00:00:00:00:00'},
-  ];
+  const {pairedDevices, discoveredDevices} = useDevices();
 
   return (
     <SafeAreaView>
       <Text style={styles.title}>Paired</Text>
-      <DeviceList devices={pairedDevices} />
+      <DeviceList devices={pairedDevices} isPaired />
       <Text style={styles.title}>Discovered</Text>
       <DeviceList devices={discoveredDevices} />
     </SafeAreaView>

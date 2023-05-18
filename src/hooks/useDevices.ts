@@ -7,28 +7,27 @@ function useDevices() {
   const [pairedDevices, updatePaired] = useAtom(paired);
 
   const addDiscoveredDevice = (device: Device) => {
-    const newDiscoveredDevices = new Map(discoveredDevices);
-    newDiscoveredDevices.set(device.address, device);
-    updateDiscovered(newDiscoveredDevices);
+    device.isSaved = false;
+    updateDiscovered({
+      action: 'add',
+      device,
+    });
   };
 
   const addPairedDevice = (device: Device) => {
-    const newPairedDevices = new Map(pairedDevices);
     device.isSaved = true;
-    newPairedDevices.set(device.address, device);
-    updatePaired(newPairedDevices);
+    updatePaired({
+      action: 'add',
+      device,
+    });
   };
 
   const removePairedDevice = (device: Device) => {
-    const newPairedDevices = new Map(pairedDevices);
     device.isSaved = false;
-    newPairedDevices.delete(device.address);
-    updatePaired(newPairedDevices);
-  };
-  const removeDiscoveredDevice = (device: Device) => {
-    const newDiscoveredDevices = new Map(discoveredDevices);
-    newDiscoveredDevices.delete(device.address);
-    updateDiscovered(newDiscoveredDevices);
+    updatePaired({
+      action: 'remove',
+      device,
+    });
   };
 
   return {
@@ -37,7 +36,6 @@ function useDevices() {
     addDiscoveredDevice,
     addPairedDevice,
     removePairedDevice,
-    removeDiscoveredDevice,
   };
 }
 

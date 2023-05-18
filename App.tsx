@@ -1,30 +1,21 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native/';
-import {DeviceList} from './src/components/DeviceList';
-import useDevices from './src/hooks/useDevices';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {Screen1} from './src/screen/Screen1';
+import {Screen2} from './src/screen/Screen2';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const {pairedDevices, discoveredDevices} = useDevices();
-
+  console.log('RENDER APP TSX');
   return (
-    <SafeAreaView>
-      <Text style={styles.title}>Paired</Text>
-      <DeviceList devices={pairedDevices} isPaired />
-      <Text style={styles.title}>Discovered</Text>
-      <DeviceList devices={discoveredDevices} />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Screen1">
+        <Stack.Screen name="Screen1" component={Screen1} />
+        <Stack.Screen name="Screen2" component={Screen2} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    padding: 20,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: 'black',
-  },
-});
 
 export default App;

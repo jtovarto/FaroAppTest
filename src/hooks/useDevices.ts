@@ -1,10 +1,10 @@
 import {useAtom} from 'jotai';
-import {discovered, paired} from '../stores/BleStore';
+import {pairedDevices, discoveredDevices} from '../stores/BleStore';
 import {Device} from '../types/types';
 
 function useDevices() {
-  const [discoveredDevices, updateDiscovered] = useAtom(discovered);
-  const [pairedDevices, updatePaired] = useAtom(paired);
+  const [discovered, updateDiscovered] = useAtom(discoveredDevices);
+  const [paired, updatePaired] = useAtom(pairedDevices);
 
   const addDiscoveredDevice = (device: Device) => {
     device.isSaved = false;
@@ -31,8 +31,8 @@ function useDevices() {
   };
 
   return {
-    pairedDevices: Array.from(pairedDevices.values()),
-    discoveredDevices: Array.from(discoveredDevices.values()),
+    pairedDevices: Array.from(paired.values()),
+    discoveredDevices: Array.from(discovered.values()),
     addDiscoveredDevice,
     addPairedDevice,
     removePairedDevice,

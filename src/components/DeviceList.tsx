@@ -21,44 +21,44 @@ export const DeviceList = ({
     addPairedDevice(device);
   };
 
-  if (devices.length === 0) {
+  if (devices.length > 0) {
     return (
-      <View
-        style={{...styles.row, justifyContent: 'center', paddingVertical: 30}}>
-        <Text style={styles.title}>No devices found</Text>
+      <View>
+        {devices.map((device, index) => (
+          <View style={styles.row} key={index}>
+            <View style={{flex: 1}}>
+              <Text style={styles.title}>{device.name}</Text>
+              <Text style={styles.address}>{device.address}</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.buttonC}
+              onPress={() => onPressHandler(device)}>
+              <Text style={styles.label}>Connect</Text>
+            </TouchableOpacity>
+            {isPaired ? (
+              <TouchableOpacity
+                style={styles.buttonR}
+                onPress={() => onPressHandler(device)}>
+                <Text style={styles.label}>Remove</Text>
+              </TouchableOpacity>
+            ) : null}
+            {!isPaired && !device.isSaved ? (
+              <TouchableOpacity
+                style={styles.buttonS}
+                onPress={() => onPressHandler(device)}>
+                <Text style={styles.label}>Save</Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
+        ))}
       </View>
     );
   }
 
   return (
-    <View>
-      {devices.map((device, index) => (
-        <View style={styles.row} key={index}>
-          <View style={{flex: 1}}>
-            <Text style={styles.title}>{device.name}</Text>
-            <Text style={styles.address}>{device.address}</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.buttonC}
-            onPress={() => onPressHandler(device)}>
-            <Text style={styles.label}>Connect</Text>
-          </TouchableOpacity>
-          {isPaired ? (
-            <TouchableOpacity
-              style={styles.buttonR}
-              onPress={() => onPressHandler(device)}>
-              <Text style={styles.label}>Remove</Text>
-            </TouchableOpacity>
-          ) : null}
-          {!isPaired && !device.isSaved ? (
-            <TouchableOpacity
-              style={styles.buttonS}
-              onPress={() => onPressHandler(device)}>
-              <Text style={styles.label}>Save</Text>
-            </TouchableOpacity>
-          ) : null}
-        </View>
-      ))}
+    <View
+      style={{...styles.row, justifyContent: 'center', paddingVertical: 30}}>
+      <Text style={styles.title}>No devices found</Text>
     </View>
   );
 };

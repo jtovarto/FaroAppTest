@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {DeviceContainer} from '../components/DeviceContainer';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import BleManager, {
   BleScanCallbackType,
   BleScanMatchMode,
@@ -13,7 +13,7 @@ const SERVICE_UUIDS: string[] = [];
 const ALLOW_DUPLICATES = true;
 
 export const Screen3 = () => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   // const updateDiscovered = useSetAtom(discovered);
 
   const startScan = () => {
@@ -38,8 +38,6 @@ export const Screen3 = () => {
     }
   };
 
-  console.log('RENDER SCREEN 3');
-
   return (
     <View style={styles.screen}>
       <DeviceContainer />
@@ -48,7 +46,8 @@ export const Screen3 = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('Screen4')}>
+        // onPress={() => navigation.navigate('Screen4')}
+      >
         <Text style={styles.label}>Go to Next</Text>
       </TouchableOpacity>
     </View>

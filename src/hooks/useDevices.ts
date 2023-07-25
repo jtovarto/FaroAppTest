@@ -1,5 +1,5 @@
 import {useAtom} from 'jotai';
-import {pairedDevices, discoveredDevices} from '../stores/BleStore';
+import {pairedDevices, discoveredDevices, ACTIONS} from '../stores/BleStore';
 import {Device} from '../types/types';
 
 function useDevices() {
@@ -17,7 +17,7 @@ function useDevices() {
   const addPairedDevice = (device: Device) => {
     device.isSaved = true;
     updatePaired({
-      action: 'add',
+      action: ACTIONS.ADD,
       device,
     });
   };
@@ -25,8 +25,16 @@ function useDevices() {
   const removePairedDevice = (device: Device) => {
     device.isSaved = false;
     updatePaired({
-      action: 'remove',
-      device,
+      action: ACTIONS.REMOVE,
+      device: device.address,
+    });
+  };
+
+  const updatePairedDevice = (deviceId: string, payload: Partial<Device>) => {
+    updatePaired({
+      action: ACTIONS.UPDATE,
+      deviceId,
+      payload,
     });
   };
 
@@ -36,6 +44,7 @@ function useDevices() {
     addDiscoveredDevice,
     addPairedDevice,
     removePairedDevice,
+    updatePairedDevice,
   };
 }
 

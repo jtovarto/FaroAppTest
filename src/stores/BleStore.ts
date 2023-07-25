@@ -1,3 +1,4 @@
+/* eslint-disable curly */
 import {atom} from 'jotai';
 import {Device, Devices} from '../types/types';
 
@@ -12,38 +13,48 @@ export enum ACTIONS {
 
 export type Payload =
   | {
-      action: ACTIONS.ADD | ACTIONS.UPDATE;
+      action: ACTIONS.ADD;
       device: Partial<Device> & {address: string};
     }
   | {
       action: ACTIONS.REMOVE;
       device: string;
+    }
+  | {
+      action: ACTIONS.UPDATE;
+      deviceId: string;
+      payload: Partial<Device>;
     };
 
 export const pairedDevices = atom(
   get => get(paired),
-  (get, set, {action, device}) => {
+  (get, set, payload: Payload) => {
     const devices = new Map(get(paired));
 
-    switch (action) {
+    switch (payload.action) {
       case ACTIONS.ADD:
-        if (devices.has(device.address)) return;
-        devices.set(device.address, device);
+        if (devices.has(payload.device.address)) return;
+        devices.set(payload.device.address, payload.device as Device);
         break;
       case ACTIONS.REMOVE:
-        if (!devices.has(device)) return;
-        console.log('remove', device);
-        devices.delete(device.address);
+        if (!devices.has(payload.device)) return;
+        console.log('remove', payload.device);
+        devices.delete(payload.device);
         break;
       case ACTIONS.UPDATE:
-        if (!devices.has(device.address)) return;
-        devices.set(device.address, device);
+        if (!devices.has(payload.deviceId)) return;
+        const uDevice = devices.get(payload.deviceId);
+
+        devices.set(payload.deviceId, {
+          ...uDevice,
+          ...payload.payload,
+        } as Device);
+
         break;
       default:
         break;
     }
 
-    console.log('pairedDevices', action, device);
     set(paired, devices);
   },
 );

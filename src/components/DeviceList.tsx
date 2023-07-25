@@ -4,6 +4,8 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Device} from '../types/types';
 import useDevices from '../hooks/useDevices';
 
+import BleManager from 'react-native-ble-manager';
+
 export const DeviceList = ({
   devices,
   isPaired = false,
@@ -21,6 +23,18 @@ export const DeviceList = ({
     addPairedDevice(device);
   };
 
+  const onConnectHandler = (device: Device) => {
+    BleManager.connect(device.address);
+    console.log('connected to device', device);
+  };
+
+  const onSendCommnad = (device: Device) => {
+    const SERVICE_UUID = '00004523-1212-EFDE-1523-785FEABCD120'.toLowerCase();
+    const COMMAND_UUID = '00004525-1212-EFDE-1523-785FEABCD120'.toLowerCase();
+    BleManager.write(device.address, SERVICE_UUID, COMMAND_UUID, [200]);
+    console.log('sending command to device');
+  };
+
   if (devices.length > 0) {
     return (
       <View>
@@ -30,17 +44,26 @@ export const DeviceList = ({
               <Text style={styles.title}>{device.name}</Text>
               <Text style={styles.address}>{device.address}</Text>
             </View>
-            <TouchableOpacity
-              style={styles.buttonC}
-              onPress={() => onPressHandler(device)}>
-              <Text style={styles.label}>Connect</Text>
-            </TouchableOpacity>
-            {isPaired ? (
+            {isPaired && !device.isConnected ? (
               <TouchableOpacity
-                style={styles.buttonR}
-                onPress={() => onPressHandler(device)}>
-                <Text style={styles.label}>Remove</Text>
+                style={styles.buttonC}
+                onPress={() => onConnectHandler(device)}>
+                <Text style={styles.label}>Connect</Text>
               </TouchableOpacity>
+            ) : null}
+            {isPaired ? (
+              <>
+                <TouchableOpacity
+                  style={styles.buttonR}
+                  onPress={() => onPressHandler(device)}>
+                  <Text style={styles.label}>Remove</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.buttonC}
+                  onPress={() => onSendCommnad(device)}>
+                  <Text style={styles.label}>Send</Text>
+                </TouchableOpacity>
+              </>
             ) : null}
             {!isPaired && !device.isSaved ? (
               <TouchableOpacity
